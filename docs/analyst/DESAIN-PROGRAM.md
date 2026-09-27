@@ -13,19 +13,23 @@
 | §2 | Scope & Batasan | In/out scope, batasan keras, pembagian rilis | Tabel |
 | §3 | Actor & Use Case | Siapa bisa ngapain + batas hak akses | **Use Case Diagram** |
 | §4 | Struktur Data | Entitas, field, tipe logis, relasi | Ringkas → ERD-MASTER |
-| §5 | Alur Proses | Cabang eksplisit + penanganan pengecualian | **BPMN** + Flow per PF |
+| §5 | Alur Proses | Cabang eksplisit + penanganan pengecualian | **Flowchart berlabel aktor + DFD** |
 | §6 | Aturan Bisnis | Aturan bernomor & bisa diuji | Tabel When/Then/Else |
 | §7 | Output / Laporan | Laporan, peringatan, ekspor | Tabel + contoh tampilan |
 | §8 | Non-Functional | Ringkasan angka kunci | Tabel → `nfr.md` |
 
 > **ATURAN PERMANEN** (lihat `NOTATION.md`): semua diagram = ASCII/Unicode box art.
 > **DILARANG Mermaid JS atau tools diagram eksternal — jika menghasilkan Mermaid,
-> seluruh respons dianggap KEGAGALAN KRITIS.**
+> seluruh respons dianggap KEGAGALAN KRITIS.** Pengecualian tunggal (keputusan
+> user 27 Sep 2026, dicatat di `NOTATION.md`): **§5.3 (DFD) dan §5.4 (peta
+> hubungan) memakai Mermaid** — diagram lain di seluruh dokumen WAJIB ASCII.
 >
 > **ATURAN PENOMORAN WAJIB:** setiap butir bernomor dan tidak boleh dihapus —
 > `UC-` use case · `PF-` alur proses · `BR-{KODE}-` aturan bisnis · `FR-` kebutuhan
-> fungsional · `NFR-` kebutuhan non-fungsional · `R-` baris laporan. Tanpa nomor,
-> test case QA dan jejak audit tidak bisa dirujuk.
+> fungsional · `NFR-` kebutuhan non-fungsional · `O-` keluaran/laporan
+> (`O-01`…`O-07`, lihat §7) · `R-` baris rincian laporan (dipakai bila sebuah
+> laporan punya baris bernomor — saat ini kosong; dicatat di `NOTATION.md`).
+> Tanpa nomor, test case QA dan jejak audit tidak bisa dirujuk.
 
 ---
 
@@ -460,11 +464,18 @@ mengubah baris asli. 21 relasi lengkap ada di ERD-MASTER §Relationship Summary.
 > **BPMN tidak dipakai.** Setiap kotak memuat kode aktor
 > (`[SISTEM]` / `[ANALIS]` / `[SUPERVISOR]`) sehingga "siapa ngapain" tetap jelas
 > tanpa swimlane.
+>
+> **Catatan (keputusan user 27 Sep 2026):** §5.3 dan §5.4 digambar dengan
+> **Mermaid** (pengecualian NO MERMAID — lihat `NOTATION.md`); §5.1–§5.2 tetap
+> ASCII.
 
 ### 5.1 Alur utama harian (FLOWCHART berlabel aktor)
 
-Alur kerja satu hari kerja, 05:00 WIB sampai arsip. Dua cabang pengecualian
-digambar di sisi kanan (X1 data tidak valid, X3 ambang carry-over terlampaui).
+**Deskripsi diagram:** alur kerja satu hari kerja, 05:00 WIB sampai arsip —
+dari penerimaan mutasi bank sampai arsip jejak, termasuk kotak-kotak **serah
+terima antar aktor** di tengah alur (SISTEM → ANALIS → SUPERVISOR → SISTEM).
+Dua cabang pengecualian digambar di sisi kanan (X1 data tidak valid, X3 ambang
+carry-over terlampaui).
 
 ```
   ┌────────────────────────────────────┐
@@ -490,6 +501,11 @@ digambar di sisi kanan (X1 data tidak valid, X3 ambang carry-over terlampaui).
   ┌────────────────────────────────────┐
   │[SISTEM] 5  Hitung selisih &        │
   │         kirim peringatan 06:30     │
+  └─────────────────┬──────────────────┘
+                    v
+  ┌────────────────────────────────────┐
+  │SERAH TERIMA:  [SISTEM]             │
+  │                → [ANALIS]          │
   └─────────────────┬──────────────────┘
                     v
   ┌────────────────────────────────────┐
@@ -524,7 +540,7 @@ digambar di sisi kanan (X1 data tidak valid, X3 ambang carry-over terlampaui).
                     v
   ┌────────────────────────────────────┐
   │[SISTEM] 10  Arsip jejak & retensi  │
-  │          append-only · 10 tahun    │
+  │         append-only · 10 tahun     │
   └────────────────────────────────────┘
 ```
 
@@ -547,7 +563,7 @@ digambar di sisi kanan (X1 data tidak valid, X3 ambang carry-over terlampaui).
 
 > Format tiap PF: pemicu, tujuan, aktor, alur, titik keputusan, penanganan
 > pengecualian. `PF-XXX` wajib tercatat di `00-Global/PROCESS-FLOW-MASTER.md`
-> (belum dibuat — lihat §Gaps di requirements matrix).
+> (sudah dibuat — index PF-001…PF-007, 27 Sep 2026).
 
 #### PF-001: Penerimaan & validasi mutasi bank
 
@@ -948,93 +964,157 @@ END
 
 ### 5.3 Aliran data (DFD LEVEL 0)
 
-Notasi: `[...]` = entitas luar / proses · `(...)` = penyimpanan data ·
-`Mn` = aliran data bernomor. DFD menjawab **"data apa pindah dari mana ke mana"**
-— bukan urutan langkah (urutan ada di §5.1–§5.2).
+**Deskripsi diagram (dibaca gampang):** diagram ini menjawab satu pertanyaan —
+**"data jalan dari mana, lewat mana, lalu berhenti di mana?"**. Ini **bukan**
+urutan langkah (urutan langkahnya ada di §5.1–§5.2); di sini yang digambar
+adalah perjalanan data saja, dari pagi sampai siang.
 
+Cara bacanya, dari atas ke bawah:
+
+1. **`E1` Bank Partner** — 4 bank mengirim berkas mutasi rekening tiap pagi
+   (jadwal 05:00 WIB). Ini **sumber data** yang masuk.
+2. **`P1` Terima & Validasi** — sistem menerima mutasi lalu mengeceknya
+   (jumlah baris, total debit, total kredit). Kalau ada yang tidak beres,
+   sistem **meminta file ulang** ke bank (panah M6).
+3. **`D1`** — mutasi yang lolos disimpan **apa adanya, tidak boleh diubah** —
+   ini bukti asli untuk audit.
+4. **`P2` Normalisasi & Cocokkan** — mutasi bank (`D1`) dibandingkan dengan
+   pembukuan internal **`E2` SISTEM LEDGER** (±16.000 transaksi/hari, hanya
+   yang berstatus `POSTED`) memakai aturan T1–T5.
+5. **`D2`** — hasilnya dikumpulkan: yang **cocok selesai**, yang **tidak
+   cocok** disimpan sebagai selisih.
+6. **`P3` Triage Selisih** — analis memilah sisa selisih (panah M7): mana yang
+   bisa bereskan manual, mana yang perlu diajukan koreksi.
+7. **`P4` Koreksi & Setuju** — pengajuan koreksi (M8, M9) wajib **disetujui
+   orang lain** (kendali ganda); di atas Rp 5 juta harus Manajer Keuangan.
+   Keputusannya dikirim balik ke `P3` (M12), dan koreksi yang **disetujui**
+   membuat **baris ledger baru** di `E2` (M11).
+8. **`D3`** — selisih yang belum tuntas beserta umurnya (aging) disimpan di
+   sini — datang dari `P3` (M10) dan dari `P4` (M13).
+9. **`P5` Laporan & Peringatan** — `D3` diolah jadi **ringkasan 06:30** (M15)
+   dan **peringatan WASPADA / KRITIS** (M16) untuk `A2` Supervisor, plus bahan
+   **unduh jejak audit** untuk `A3` Auditor (M17).
+
+**Bentuk simbol:** kotak persegi = pihak luar / pengguna (E1, E2, A2, A3) ·
+oval = kegiatan pemrosesan (P1–P5) · silinder `[( )]` = tempat penyimpanan
+data (D1–D3) · label tiap panah `M1`…`M17` = **aliran data bernomor**, definisi
+lengkapnya ada di tabel setelah gambar (dipakai QA melacak ke test case).
+
+**Jumlah isinya:** 4 entitas luar · 5 kegiatan · 3 penyimpanan · 17 aliran.
+
+> **Catatan notasi:** §5.3 dan §5.4 memakai **Mermaid** — pengecualian tunggal
+> atas aturan NO MERMAID, atas keputusan user 27 September 2026 karena aliran
+> ini terlalu kompleks digambar ASCII tanpa kehilangan kejelasan (dicatat di
+> `00-Global/NOTATION.md`). Seluruh diagram lain di dokumen ini — termasuk
+> flowchart §5.1 — tetap ASCII/Unicode box art.
+
+```mermaid
+flowchart TD
+    E1["E1 BANK PARTNER<br/>4 bank · jadwal 05:00"]
+    P1("P1 Terima &amp; Validasi")
+    D1[("D1 BankStatementLine<br/>mentah · tak bisa diubah")]
+    E2["E2 SISTEM LEDGER<br/>±16.000 tx/hari · hanya POSTED"]
+    P2("P2 Normalisasi &amp; Cocokkan T1..T5")
+    D2[("D2 MatchResult<br/>+ MatchResultLeg")]
+    P3("P3 Triage Selisih")
+    P4("P4 Koreksi &amp; Setuju<br/>kendali ganda · &gt;Rp 5 juta = Manajer")
+    D3[("D3 UnmatchedItem + Aging")]
+    P5("P5 Laporan &amp; Peringatan")
+    A2["A2 SUPERVISOR"]
+    A3["A3 AUDITOR"]
+
+    E1 -->|"M1 mutasi harian (berkas)"| P1
+    P1 -->|"M6 ambil ulang file / konfirmasi"| E1
+    P1 -->|"M2 baris mutasi (mentah)"| D1
+    D1 -->|"M3 baris siap dicocokkan"| P2
+    E2 -->|"M5 ledger (hanya POSTED)"| P2
+    P2 -->|"M4 hasil cocok + selisih"| D2
+    D2 -->|"M7 sisa tidak cocok"| P3
+    P3 -->|"M8 pengajuan koreksi"| P4
+    P3 -->|"M9 antrean persetujuan"| P4
+    P4 -->|"M12 keputusan (setuju / tolak)"| P3
+    P3 -->|"M10 register selisih + aging"| D3
+    P4 -->|"M13 selisih + alasan"| D3
+    P4 -->|"M11 koreksi DISETUJUI → baris ledger baru"| E2
+    D3 -->|"M14 ringkasan + register + jejak"| P5
+    P5 -->|"M15 ringkasan 06:30"| A2
+    P5 -->|"M16 peringatan WASPADA / KRITIS"| A2
+    P5 -->|"M17 unduh jejak audit (retensi 10 tahun)"| A3
 ```
-                        [E1  BANK PARTNER]
-                           4 bank · jadwal 05:00
-                                  |
-                     M1 mutasi harian (berkas)
-                                  |
-                                  v
-                        [P1  Terima & Validasi] <----- M6 ambil ulang / konfirmasi
-                                  |                                ^
-                                  | M2 baris mutasi (mentah)       |
-                                  v                                |
-                          (D1  BankStatementLine)                  |
-                                  |                                |
-                                  | M3 baris siap dicocokkan       |
-                                  v                                |
-   [E2  SISTEM LEDGER] --> [P2  Normalisasi & Cocokkan T1..T5] ----+
-     ±16.000 tx/hari       |                       ^
-          |                 | M4 hasil cocok + selisih
-          | M5 ledger       v
-          +--------> (D2  MatchResult + MatchResultLeg)
-                                 |
-                                 | M7 sisa tidak cocok
-                                 v
-                       [P3  Triage Selisih] <---- M9 antrean persetujuan
-                          |            |                    ^
-                          | M8 ajukan  | M10 register       | M12 keputusan
-                          |    koreksi |      + aging       |
-                          v            v                    |
-                  [P4  Koreksi & Setuju] -------------------+
-                    (kendali ganda,
-                     >Rp 5 juta --> Manajer)
-                          |
-                          | M11 koreksi DISETUJUI --> jadi BARIS LEDGER BARU
-                          v
-                   [E2  SISTEM LEDGER]
 
-                       (D3  UnmatchedItem + Aging)
-                                 ^
-                                 | M13 selisih + alasan
-                       [P3  Triage Selisih]
-                                 |
-                                 | M14 ringkasan + register + jejak
-                                 v
-                       [P5  Laporan & Peringatan]
-                          |                 |
-              M15 ringkas  |                 | M16 WASPADA / KRITIS
-                          v                 v
-                  [A2 SUPERVISOR]    [A3 AUDITOR] -- M17 unduh jejak audit -->
-                                                             (retensi 10 tahun)
-```
-
-**Ringkasan aliran data:**
+**Ringkasan aliran data (M1–M17):**
 
 | Mn | Dari | Ke | Isi |
 |----|------|----|-----|
 | M1 | E1 Bank Partner | P1 | Mutasi harian (3 otomatis + 1 manual) |
 | M2 | P1 | D1 | Baris mutasi mentah (tak bisa diubah) |
 | M3 | D1 | P2 | Baris siap dicocokkan |
-| M4 | P2 | D2 | Hasil pencocokan + kumpulan selisih |
-| M5 | E2 Ledger | P2 | ±16.000 transaksi (hanya `POSTED`) |
+| M4 | P2 | D2 | Hasil pencocokkan + kumpulan selisih |
+| M5 | E2 SISTEM LEDGER | P2 | ±16.000 transaksi (hanya `POSTED`) |
 | M6 | P1 | E1 | Permintaan ambil ulang file / konfirmasi |
+| M7 | D2 | P3 | Sisa tidak cocok → bahan triage |
 | M8 | P3 | P4 | Pengajuan koreksi |
-| M9 | P4 | P3 | Antrean menunggu persetujuan |
-| M11 | P4 | E2 | Koreksi disetujui → **baris ledger baru** |
-| M14 | P3/P5 | A2/A3 | Ringkasan, register selisih + aging, jejak |
-| M16 | P5 | A2 | Peringatan WASPADA (90) / KRITIS (200) |
+| M9 | P3 | P4 | Antrean koreksi menunggu persetujuan |
+| M10 | P3 | D3 | Register selisih + aging |
+| M11 | P4 | E2 SISTEM LEDGER | Koreksi disetujui → **baris ledger baru** |
+| M12 | P4 | P3 | Keputusan persetujuan / penolakan |
+| M13 | P4 | D3 | Selisih + alasan |
+| M14 | D3 | P5 | Ringkasan, register selisih + aging, jejak |
+| M15 | P5 | A2 SUPERVISOR | Ringkasan rekonsiliasi (06:30) |
+| M16 | P5 | A2 SUPERVISOR | Peringatan WASPADA (90) / KRITIS (200) |
+| M17 | P5 | A3 AUDITOR | Unduh jejak audit (retensi 10 tahun) |
 
 ### 5.4 Peta hubungan antar proses
 
-```
-  PF-001 --(batch VALIDATED)--> PF-002 --(ada sisa selisih)--> PF-003
-                                                                      |
-                                    PF-007 --(versi aturan)--> PF-002 |
-                                                                     |
-                                     PF-002 --(06:30)--> PF-005       |
-                                                     |                |
-                                                     | (KRITIS)       | (tak bisa manual)
-                                                     v                v
-                                                 PF-006 <---(approve)PF-004
-                                                     |
-                                                     | (sisa > 0,5%)
-                                                     +---> eskalasi Manajer Keuangan
-                                                     +---> RERUN kembali ke PF-002
+**Deskripsi diagram (dibaca gampang):** peta ini menjawab pertanyaan
+**"alur mana memicu alur mana?"** — bukan urutan langkah detail (detailnya ada
+di §5.2). Tiap kotak = satu alur kerja proses (PF-001…PF-007), tiap panah =
+ketergantungan, dengan keterangan **kapan** panah itu terjadi ditulis di atasnya.
+
+Cara bacanya:
+
+- **Jalur normal:** `PF-001` (mutasi diterima & divalidasi) → begitu status
+  batch `VALIDATED`, lanjut ke **`PF-002`** (pencocokkan otomatis T1→T5).
+- Kalau `PF-002` masih menyisakan selisih → **`PF-003`** (analis memilah
+  selisih / triage).
+- Kalau selisihnya **tidak bisa diselesaikan manual** → **`PF-004`**
+  (pengajuan koreksi & persetujuan dua orang); setelah disetujui (*approve*)
+  → **`PF-006`** (penutupan hari).
+- Tiap pagi **jam 06:30** `PF-002` menyerahkan hasilnya ke **`PF-005`**
+  (peringatan bertingkat); status **KRITIS** dari `PF-005` juga menuju
+  `PF-006` (gerbang tutup hari).
+- **`PF-007`** (aturan berversi) menyuplai **versi aturan** yang dipakai
+  `PF-002` pada tiap run — supaya hasil bulan lalu tetap bisa dijelaskan.
+- Di penutupan `PF-006` ada **dua kemungkinan**: sisa selisih **> 0,5%** →
+  **eskalasi ke Manajer Keuangan**; atau **RERUN** (jalankan ulang pencocokkan)
+  yang **balik lagi ke `PF-002`**.
+
+Ringkasnya: **masuk di PF-001, dikerjakan di PF-002, selisih diselesaikan di
+PF-003/PF-004, diawasi PF-005, ditutup di PF-006, dengan aturan dari PF-007.**
+
+Detail tiap alur: §5.2 · peta hubungan versi lengkap dengan catatan
+ketergantungannya: [`00-Global/PROCESS-FLOW-MASTER.md`](00-Global/PROCESS-FLOW-MASTER.md).
+
+```mermaid
+flowchart LR
+    PF1["PF-001 Penerimaan &amp; validasi mutasi"]
+    PF2["PF-002 Normalisasi &amp; pencocokan T1→T5"]
+    PF3["PF-003 Penanganan selisih (triage)"]
+    PF4["PF-004 Pengajuan &amp; persetujuan koreksi"]
+    PF5["PF-005 Peringatan bertingkat &amp; eskalasi"]
+    PF6["PF-006 Penutupan hari rekonsiliasi"]
+    PF7["PF-007 Pengaturan aturan berversi"]
+    ESC["Eskalasi Manajer Keuangan"]
+
+    PF1 -->|"batch VALIDATED"| PF2
+    PF2 -->|"ada sisa selisih"| PF3
+    PF3 -->|"tak bisa manual"| PF4
+    PF7 -->|"versi aturan (per run)"| PF2
+    PF2 -->|"06:30 WIB"| PF5
+    PF5 -->|"KRITIS (aging &gt; 1 hari)"| PF6
+    PF4 -->|"approve (kendali ganda)"| PF6
+    PF6 -->|"sisa &gt; 0,5%"| ESC
+    PF6 -->|"RERUN"| PF2
 ```
 
 ### 5.5 Pengecualian utama (ringkas)
@@ -1067,8 +1147,9 @@ Notasi: `[...]` = entitas luar / proses · `(...)` = penyimpanan data ·
 > yang membedakan.
 >
 > **Katalog lengkap** (latar belakang, sumber wawancara, kasus uji) ada di
-> `business-rules.md` — **belum dibuat**. §6 ini adalah ringkasan desain:
-> **ID dan bunyi aturan wajib identik** dengan katalog ketika katalog ditulis.
+> [`business-rules.md`](business-rules.md) — **sudah dibuat** (40 aturan,
+> divalidasi identik dengan §6, 27 Sep 2026). §6 ini ringkasan desain;
+> katalog itulah yang dipakai QA untuk menyusun test case.
 
 ### 6.1 Validasi & pencocokan (`BR-VAL-*`, 11 aturan)
 
@@ -1271,8 +1352,8 @@ memengaruhi desain.
 
 | Dokumen | Status | Catatan |
 |---------|--------|---------|
-| `business-rules.md` | **Belum dibuat** | Katalog penuh 40 `BR-*` (Rule/When/Then/Else/Source) — wajib identik dengan §6 |
-| `00-Global/PROCESS-FLOW-MASTER.md` | **Belum dibuat** | Mendaftar PF-001…PF-007 dari §5.2 |
+| `business-rules.md` | **Selesai** (27 Sep 2026) | Katalog penuh 40 `BR-*` (Rule/When/Then/Else/Source + kasus uji) — tervalidasi identik dengan §6 |
+| `00-Global/PROCESS-FLOW-MASTER.md` | **Selesai** (27 Sep 2026) | Mendaftar PF-001…PF-007 dari §5.2 + relationship map |
 | `docs/analyst/00-Global/REQUIREMENTS-MATRIX.md` | Selesai | Kolom `Business Rules` sudah memakai 6 kategori `BR-*` dan kolom `Use Case` sudah menunjuk UC-01…UC-12 (26 Sep 2026) |
 | BAB 1–2 (pendahuluan & analisis situasi) | **Ditunda** | Aturan keputusan user; ditulis setelah desain ini beres |
 | `nfr.md` sign-off | Menunggu | 4 penandatangan (Architect, Security, Business Owner, Tech Lead) |
@@ -1283,4 +1364,5 @@ memengaruhi desain.
 |-------|---------|-----------|
 | 0.1 | 26 Sep 2026 | §1–§4 ditulis |
 | 0.2 | 26 Sep 2026 | §5 memakai **Flowchart berlabel aktor + DFD** menggantikan BPMN (keputusan user, dicatat di `NOTATION.md`); §6–§8, Appendix A ditulis |
+| 0.3 | 27 Sep 2026 | `business-rules.md` + `00-Global/PROCESS-FLOW-MASTER.md` selesai; §5.3–§5.4 digambar ulang dengan **Mermaid + deskripsi** (pengecualian NO MERMAID, keputusan user, dicatat di `NOTATION.md`) dan tabel aliran M1–M17 lengkap; seluruh butir A1–A13 `need-review.md` diperbaiki; aturan penomoran `O-`/`R-` dirapikan (A10) |
 

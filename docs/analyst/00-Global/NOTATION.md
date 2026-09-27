@@ -94,6 +94,9 @@ kalau user tidak menyebutkan jenis informasi yang mau digambarkan.
 
 - Semua diagram WAJIB ASCII/Unicode text box — dilarang Mermaid JS
   atau tools diagram eksternal (lihat aturan NO MERMAID permanen).
+  **Pengecualian tunggal (keputusan user 27 Sep 2026):** `DESAIN-PROGRAM.md`
+  §5.3 (DFD Level 0) dan §5.4 (peta hubungan) memakai Mermaid karena
+  kompleksitas aliran; semua diagram lain tetap ASCII tanpa kecuali.
 - ERD struktur data → `00-Global/ERD-MASTER.md` (lihat ERD-FORMAT.md).
 - Index alur proses lintas modul → `00-Global/PROCESS-FLOW-MASTER.md`
   (lihat PROCESS-FLOW-MASTER-FORMAT.md).
@@ -109,6 +112,15 @@ kalau user tidak menyebutkan jenis informasi yang mau digambarkan.
 >
 > Alasan: konsistensi, portabilitas, tidak butuh tool tambahan,
 > bisa di-render di mana saja.
+>
+> **Pengecualian (keputusan user 27 Sep 2026):** Mermaid **diizinkan khusus**
+> untuk `DESAIN-PROGRAM.md` §5.3 (DFD Level 0) dan §5.4 (peta hubungan) karena
+> kompleksitas aliran (17 aliran data M1–M17; 9 hubungan PF). Kedua section itu
+> WAJIB dibuka dengan **deskripsi diagram** (apa isinya dan pertanyaan apa yang
+> dijawab). Untuk semua diagram LAIN — termasuk §5.1, `ERD-MASTER.md`,
+> `PROCESS-FLOW-MASTER.md`, dan `business-rules.md` — aturan NO MERMAID tetap
+> berlaku penuh: Mermaid di luar dua section tersebut = kegagalan kritis
+> seperti biasa.
 
 ## PENERAPAN PROYEK INI (Bank Reconciliation & Statement Mapping System)
 
@@ -128,3 +140,15 @@ kalau user tidak menyebutkan jenis informasi yang mau digambarkan.
 > (setiap kotak memuat kode aktor `[SISTEM]`/`[ANALIS]`/`[SUPERVISOR]`) sehingga
 > informasi "siapa ngapain" tetap tersampaikan tanpa swimlane. BPMN dilarang
 > dipakai ulang tanpa keputusan user baru.
+
+## ATURAN PENOMORAN: `O-` vs `R-` (resolusi butir A10)
+
+- `O-01` … `O-07` = **keluaran/laporan** — kode utama tiap laporan
+  (`DESAIN-PROGRAM.md` §7). Inilah yang dirujuk test case QA.
+- `R-` = **baris rincian bernomor di dalam sebuah laporan** — hanya dipakai
+  bila sebuah laporan punya baris yang perlu dirujuk terpisah. Saat ini
+  **kosong / reserved** (belum ada laporan yang butuh penomoran baris);
+  format bila kelak dipakai: `R-{nomor laporan}-{baris}`.
+- Konsekuensi: aturan penomoran header `DESAIN-PROGRAM.md` menyebut `O-`
+  (untuk laporan) dan `R-` (reserved), sehingga §7.2 **tidak** perlu diberi
+  kode `R-001…`. Ini mencatat resolusi butir **A10** di `need-review.md`.

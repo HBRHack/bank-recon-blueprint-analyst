@@ -453,5 +453,6 @@ dan tercatat lengkap di tabel di atas (sumber kebenarannya).
 - 8 `reason_code` + kategori `NON_MATCHING` (tetap tampil di laporan) →
   dipakai di `DESAIN-PROGRAM.md` §6 Aturan Bisnis dan §7 Output.
 - Anti-dobel (#11, #12) = penerapan BR anti-pasangan ganda.
-- Dual-control `requested_by ≠ approved_by` + eskalasi >Rp 5 juta → BR-WF.
+- Dual-control `requested_by ≠ approved_by` + eskalasi >Rp 5 juta →
+  `BR-AUTH-001` + `BR-AUTH-002` (lihat `DESAIN-PROGRAM.md` §6).
 - Segel `hash_seal` pada AuditEvent → NFR audit trail immutable, retensi 10 tahun.

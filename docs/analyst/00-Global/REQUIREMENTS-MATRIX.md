@@ -43,8 +43,8 @@ struktur bab disusun.
 > **FR-001 – FR-023** lengkap di [`00-Global/SRS-MASTER.md`](SRS-MASTER.md) §2.
 > **Use Case** dirujuk ke `DESAIN-PROGRAM.md` §3 (UC-01…UC-12);
 > **Business Rules** memakai 6 kode kategori (`VAL·CALC·AUTH·WF·CON·RET`),
-> dirujuk ke `DESAIN-PROGRAM.md` §6 — katalog penuh menyusul di
-> `business-rules.md`.
+> dirujuk ke `DESAIN-PROGRAM.md` §6 — katalog penuh ada di
+> [`business-rules.md`](../business-rules.md) (selesai 27 Sep 2026).
 
 ## Full Traceability Matrix (NFR)
 
@@ -75,18 +75,18 @@ struktur bab disusun.
 
 | Area | Total | Confirmed | Pending | N/A |
 |------|-------|-----------|---------|-----|
-| Functional Requirements | 23 | 17 | 6 | 0 |
+| Functional Requirements | 23 | 19 | 4 | 0 |
 | Non-Functional | 20 | 12 | 8 | 0 |
 | Assumptions | 6 | 2 (verified) | 4 (open) | 0 |
 | Constraints | 9 | 9 (tercatat) | 0 | 0 |
-| Business Rules | 40 (`BR-*`, dirujuk di `DESAIN-PROGRAM.md` §6) | — | 40 (menunggu katalog `business-rules.md`) | 0 |
+| Business Rules | 40 (`BR-*`, katalog: `business-rules.md`) | 34 | 6 (`BR-VAL-001/006`, `BR-CALC-002/003`, `BR-WF-001`, `BR-RET-002`) | 0 |
 
 ## Gaps and Risks
 
 | Gap | Impact | Mitigation |
 |-----|--------|------------|
-| **Belum ada `business-rules.md`** — 40 aturan `BR-*` (6 kategori `VAL·CALC·AUTH·WF·CON·RET`) sudah dirujuk per FR di `DESAIN-PROGRAM.md` §6, tetapi katalog penuh (Rule/When/Then/Else/Source + kasus uji) belum ditulis | FR tanpa aturan yang bisa ditest = tidak bisa diimplementasikan | Tulis `business-rules.md` dengan ID & bunyi **identik** §6 |
-| **BAB 1 & BAB 2 ditunda** (pendahuluan & analisis situasi) — Problem Statement, Scope, Actor & Use Case sementara menetap di `DESAIN-PROGRAM.md` §1–§3 | Struktur bab formal belum ada; kolom `Chapter` semua `00-Global` | Susun BAB 1–2 memakai `analyst-grill-with-docs` setelah desain beres, tanpa mengulang isi §1–§3 |
+| ~~**Belum ada `business-rules.md`**~~ | — | **Selesai 27 Sep 2026**: katalog 40 `BR-*` (6 kategori) ditulis & divalidasi identik §6 |
+| **BAB 1 & BAB 2 ditunda** (pendahuluan & analisis situasi) — Problem Statement, Scope, Actor & Use Case sementara menetap di `DESAIN-PROGRAM.md` §1–§3 | Struktur bab formal belum ada; kolom `Chapter` semua `00-Global` | Dokumen serah terima [`00-Global/HANDOFF-BAB-1-2.md`](HANDOFF-BAB-1-2.md) sudah dibuat (27 Sep 2026) — BAB 1–2 ditulis sesi terpisah mengikuti handoff, **tanpa mengulang** isi §1–§3 |
 | **Belum ada peran tester/QA** (stakeholder-register: gap SH-012) | Tidak ada pemilik untuk strategi pengujian & UAT exit | Tambahkan saat tim QA terbentuk |
 | **Belum ada nama & tanda tangan pemilik dokumen** (OQ-003) | Sign-off buntu di akhir | Konfirmasi Manajer Keuangan sebagai Business Owner |
 | **OQ-001**: proporsi non-matching belum diukur (ASM-002) | Target "selesai 20 menit" bisa tidak realistis | Sampel 1 bulan sebelum komitmen target |
@@ -112,13 +112,15 @@ struktur bab disusun.
 | Struktur data | `00-Global/ERD-MASTER.md` | 12 entitas, 21 relasi, bridge M:N |
 | Sumber requirement | `question-framework.md` | A–F terjawab + 6 gate final |
 | SRS master | `00-Global/SRS-MASTER.md` | Scope, actor, objektif, FR-001…023, integrasi |
-| Glossary | `00-Global/GLOSSARY.md` | 30 istilah, 6 kategori |
+| Glossary | `00-Global/GLOSSARY.md` | 31 istilah, 6 kategori |
 | NFR | `nfr.md` | 20 NFR, skenario QA 6 bagian |
 | Stakeholder | `stakeholder-register.md` | SH-001…011 + peta influence/interest |
 | RACI | `raci.md` | Per FR, per aktivitas, per keputusan |
 | Asumsi & konstraint | `assumptions-constraints.md` | 6 ASM + 9 CON + risk register |
 | Desain program | `DESAIN-PROGRAM.md` | 8 bagian: §1 problem statement → §8 NFR ringkas (flowchart + DFD, tanpa BPMN) |
+| Aturan bisnis | `business-rules.md` | Katalog penuh 40 `BR-*` (VAL·CALC·AUTH·WF·CON·RET), identik §6 |
+| Index alur proses | `00-Global/PROCESS-FLOW-MASTER.md` | PF-001…PF-007 + relationship map |
+| Serah terima BAB 1–2 | `00-Global/HANDOFF-BAB-1-2.md` | Sumber, struktur, daftar jangan-duplikat + daftar C1–C6 (27 Sep 2026) |
 
-**Menyusul:** `business-rules.md` (katalog penuh 40 `BR-*`) ·
-`00-Global/PROCESS-FLOW-MASTER.md` (PF-001…PF-007) ·
-`BAB-1-*` & `BAB-2-*` · `spec.md`.
+**Menyusul:** `BAB-1-*` & `BAB-2-*` (mengikuti dokumen serah terima di atas) ·
+`spec.md`.

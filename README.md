@@ -8,7 +8,7 @@
 | **Status proyek** | Analysis-first / design portfolio — desain selesai, implementasi bukan fokus |
 | **Bentuk** | Dokumen analisis: requirement, struktur data, business rules, process flow, output/laporan, NFR |
 | **Bahasa dokumen** | Bahasa Indonesia · **tanpa sebutan bahasa pemrograman / framework / basis data** (CON-009) |
-| **Diagram** | ASCII/Unicode box art · **Mermaid dilarang** (`00-Global/NOTATION.md`) |
+| **Diagram** | ASCII/Unicode box art · Mermaid **hanya** di `DESAIN-PROGRAM.md` §5.3–§5.4 (pengecualian 27 Sep 2026) — sisanya dilarang (`00-Global/NOTATION.md`) |
 | **Catatan review** | [`need-review.md`](need-review.md) — daftar error yang belum diperbaiki |
 
 ---
@@ -28,7 +28,7 @@ sebelumnya selesai. Jangan mulai dari diagram.
  2. docs/analyst/00-Global/SRS-MASTER.md ....... masalah, objektif, FR-001…023
       |
       v
- 3. docs/analyst/00-Global/GLOSSARY.md ......... 30 istilah — baca sebelum §6
+ 3. docs/analyst/00-Global/GLOSSARY.md ......... 31 istilah — baca sebelum §6
       |
       v
  4. docs/analyst/DESAIN-PROGRAM.md ............. inti portofolio, 8 bagian:
@@ -47,18 +47,24 @@ sebelumnya selesai. Jangan mulai dari diagram.
  6. docs/analyst/00-Global/REQUIREMENTS-MATRIX.md  traceability FR ↔ UC ↔ BR ↔ NFR
       |
       v
- 7. docs/analyst/nfr.md ........................ 20 NFR, skenario QA 6 bagian
- 8. docs/analyst/raci.md · stakeholder-register.md · assumptions-constraints.md
- 9. docs/analyst/00-Global/NOTATION.md ......... aturan gambar & penomoran
+ 7. docs/analyst/business-rules.md ............. katalog 40 BR-* (latar & kasus uji)
+      |
+      v
+ 8. docs/analyst/nfr.md ........................ 20 NFR, skenario QA 6 bagian
+ 9. docs/analyst/raci.md · stakeholder-register.md · assumptions-constraints.md
+ 10. docs/analyst/00-Global/PROCESS-FLOW-MASTER.md  index PF-001…PF-007
+ 11. docs/analyst/00-Global/NOTATION.md ........ aturan gambar & penomoran
 ```
 
 **Kenapa urutannya begitu:** kalimat di §6 (`BR-VAL-003…`) hanya bisa dibaca
 setelah FR-005 di SRS dan istilah di GLOSSARY jelas; diagram §5 hanya masuk akal
 setelah tahu siapa aktornya (§3) dan data apa yang dimainkan (§4).
 
-**Yang belum ditulis** (jangan dikira hilang): `business-rules.md`,
-`00-Global/PROCESS-FLOW-MASTER.md`, BAB 1–2. Daftarnya di
-`DESAIN-PROGRAM.md` Appendix A dan [`need-review.md`](need-review.md).
+**Sudah beres** (27 Sep 2026): `business-rules.md` (katalog 40 aturan) dan
+`00-Global/PROCESS-FLOW-MASTER.md` (PF-001…PF-007). **Yang belum ditulis:**
+BAB 1–2 — peta kerjanya ada di
+[`00-Global/HANDOFF-BAB-1-2.md`](docs/analyst/00-Global/HANDOFF-BAB-1-2.md).
+Daftar penuh di `DESAIN-PROGRAM.md` Appendix A dan [`need-review.md`](need-review.md).
 
 ---
 
@@ -134,7 +140,7 @@ implementasi yang direkomendasikan**, bukan pusat portofolio.
 |-------------|--------|--------|
 | FR (Functional Requirements) | 23 | `00-Global/SRS-MASTER.md` |
 | NFR | 20 | `nfr.md` |
-| BR (Business Rules, 6 kategori) | 40 | `DESAIN-PROGRAM.md` §6 · katalog: `business-rules.md` (menyusul) |
+| BR (Business Rules, 6 kategori) | 40 | `DESAIN-PROGRAM.md` §6 · katalog: `business-rules.md` (selesai) |
 | UC (Use Case) | 12 | `DESAIN-PROGRAM.md` §3 |
 | PF (Process Flow) | 7 | `DESAIN-PROGRAM.md` §5.2 |
 | Entitas / relasi data | 12 / 21 | `00-Global/ERD-MASTER.md` |
@@ -248,15 +254,18 @@ Bank-Reconciliation/
     ├── stakeholder-register.md   # SH-001…011 + gap SH-012
     ├── raci.md                   # RACI per FR / aktivitas / keputusan
     ├── assumptions-constraints.md# 6 ASM + 9 CON + risk register
+    ├── business-rules.md         # ★ katalog 40 BR-* (identik §6)
     │
     └── 00-Global/
-        ├── NOTATION.md           # matriks notasi + NO MERMAID + penomoran
+        ├── NOTATION.md           # matriks notasi + NO MERMAID (§5.3–§5.4 pengecualian) + penomoran
         ├── SRS-MASTER.md         # scope, objektif, FR-001…023, konstrain
         ├── ERD-MASTER.md         # 12 entitas, 21 relasi, bridge M:N
-        ├── GLOSSARY.md           # 30 istilah
+        ├── GLOSSARY.md           # 31 istilah
+        ├── PROCESS-FLOW-MASTER.md# index PF-001…PF-007 + relationship map
+        ├── HANDOFF-BAB-1-2.md    # serah terima penulisan BAB 1–2
         └── REQUIREMENTS-MATRIX.md# traceability + coverage + gaps
 
- Menyusul: business-rules.md · 00-Global/PROCESS-FLOW-MASTER.md · BAB 1–2
+ Menyusul: BAB 1–2 (mengikuti HANDOFF-BAB-1-2.md) · spec.md
 ```
 
 ---

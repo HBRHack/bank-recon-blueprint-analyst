@@ -8,8 +8,8 @@ teknis per field lihat [`ERD-MASTER.md`](ERD-MASTER.md).
 
 | Field | Value |
 |-------|-------|
-| **Version** | 1.0 |
-| **Last Updated** | 26 September 2026 |
+| **Version** | 1.1 |
+| **Last Updated** | 27 September 2026 |
 | **Domain** | Finance / Banking — Rekonsiliasi Bank |
 | **Owner** | System Analyst (SH-005) — review bersama Supervisor Keuangan |
 
@@ -366,6 +366,18 @@ teknis per field lihat [`ERD-MASTER.md`](ERD-MASTER.md).
 | **Related** | NFR-SEC-003, NFR-DATA-002 |
 | **Source** | Gate G-05 · CON-001 |
 
+#### BR-CON vs CON (istilah penamaan)
+
+| Field | Value |
+|-------|-------|
+| **Definition** | Dua kode yang rawan tertukar: `BR-CON-*` = **aturan bisnis** kategori kendala (5 aturan, katalog `business-rules.md` · §6 DESAIN-PROGRAM) — vs `CON-001…CON-009` = **kendala proyek** di `SRS-MASTER.md`. |
+| **Context** | Membaca §6 bersama SRS; yang membedakan adalah awalan `BR-`. |
+| **Synonyms** | BR-CON (aturan bisnis) vs CON (kendala proyek) |
+| **Avoid** | Menyebut `CON-003` sebagai "aturan bisnis", atau `BR-CON-001` sebagai "kendala proyek" |
+| **Example** | "Nilai di luar batas tolak" = `BR-CON-005` (aturan bisnis) · "retensi jejak 10 tahun" = `CON-001` (kendala proyek). |
+| **Related** | §6 DESAIN-PROGRAM · `SRS-MASTER.md` |
+| **Source** | Butir A13 `need-review.md` — catatan penamaan §6 |
+
 ---
 
 ### 6. Regulatory
@@ -413,9 +425,9 @@ teknis per field lihat [`ERD-MASTER.md`](ERD-MASTER.md).
 | Data Entity | 7 |
 | Role/Actor | 3 |
 | Status/State | 3 |
-| Technical (domain) | 3 |
+| Technical (domain) | 4 |
 | Regulatory | 2 |
-| **Total** | **30** |
+| **Total** | **31** |
 
 ## Sign-off
 

@@ -1,8 +1,10 @@
 # need-review.md — Daftar Error & Pekerjaan Perbaikan
 
-**Tanggal:** 26 September 2026
+**Tanggal:** 26 September 2026 · **Diperbarui:** 27 September 2026
 **Sumber:** cek silang otomatis `DESAIN-PROGRAM.md` ↔ `REQUIREMENTS-MATRIX.md` ↔ `ERD-MASTER.md` ↔ `NOTATION.md` ↔ `nfr.md`
-**Aturan main:** semua item di bawah **belum diperbaiki**. Dikerjakan saat sesi review berikutnya.
+**Aturan main:** butir **A (kecuali yang ditandai terbuka) dan B1–B2 sudah
+diperbaiki 27 Sep 2026** — rincian di bagian **E**. Sisa yang belum:
+**B3–B4** dan **C1–C6** (butuh keputusan/stakeholder).
 
 Legenda: `[BUG]` salah/tidak konsisten · `[GAP]` dokumen belum ada · `[OPEN]` butuh keputusan user · `[COSMETIC]` rapi-rapi.
 
@@ -32,7 +34,7 @@ Legenda: `[BUG]` salah/tidak konsisten · `[GAP]` dokumen belum ada · `[OPEN]` 
 |---|---------|---------------|-----------|
 | B1 | `docs/analyst/business-rules.md` | §6 + matrix Gap baris 84 | **Tinggi** — katalog penuh 40 `BR-*` (Rule/When/Then/Else/Source + kasus uji), wajib **identik** dengan §6 |
 | B2 | `docs/analyst/00-Global/PROCESS-FLOW-MASTER.md` | §5.2 catatan | Sedang — daftar PF-001…PF-007 |
-| B3 | BAB 1 & BAB 2 (pendahuluan, analisis situasi) | keputusan user | Sedang — **ditunda**, jangan diulang dari §1–§3 |
+| B3 | BAB 1 & BAB 2 (pendahuluan, analisis situasi) | keputusan user | Sedang — **ditunda**, jangan diulang dari §1–§3; peta kerja = `00-Global/HANDOFF-BAB-1-2.md` |
 | B4 | `docs/analyst/spec.md` / roadmap implementasi | — | Rendah — di luar scope desain |
 
 ## C. Butuh keputusan user `[OPEN]`
@@ -53,14 +55,28 @@ Legenda: `[BUG]` salah/tidak konsisten · `[GAP]` dokumen belum ada · `[OPEN]` 
 - [x] `REQUIREMENTS-MATRIX.md`: kolom **Business Rules** terisi semua dengan 6 kategori; kolom **Use Case** menunjuk UC-01…UC-12 (tidak ada sisa `(ditunda)`).
 - [x] `ERD-MASTER.md` contoh `rule_code` diganti `BR-VAL-003 / BR-VAL-005` (tidak ada `BR-MATCH-*` tersisa).
 - [x] `NOTATION.md`: pengecualian BPMN dicatat resmi + alasan keputusan user.
-- [x] **Nol Mermaid** di seluruh dokumen (hanya muncul sebagai kalimat larangan).
-- [x] Jumlah silang: 23 FR · 20 NFR · 12 UC · 7 PF · 9 CON · 6 ASM · 30 istilah.
+- [x] **Nol Mermaid** di seluruh dokumen (hanya muncul sebagai kalimat larangan) — *diperbarui 27 Sep: lihat butir E14*.
+- [x] Jumlah silang: 23 FR · 20 NFR · 12 UC · 7 PF · 9 CON · 6 ASM · 30 istilah *(kini 31 — E13)*.
+
+## E. Yang sudah beres (27 Sep 2026)
+
+- [x] **A1** — indeks header §5 kini `Flowchart berlabel aktor + DFD`.
+- [x] **A2** — Coverage Summary FR: `23 | 19 | 4 | 0` (Confirmed 19 / Pending 4).
+- [x] **A3–A7** — §5.3 DFD **digambar ulang** (M10 → D3; M9 turun P3→P4 & M12 naik; D3 punya masuk M10/M13 & keluar M14 → P5; M17 rapi ke A3; tabel **M1–M17 lengkap 17 baris**, penamaan E2 seragam).
+- [x] **A8** — kotak `SERAH TERIMA [SISTEM] → [ANALIS]` ditambahkan di §5.1 sebelum `[6]`.
+- [x] **A9** — `ERD-MASTER.md`: `→ BR-AUTH-001 + BR-AUTH-002`.
+- [x] **A10** — opsi (b): aturan penomoran header = `O-` laporan + `R-` baris rincian (**reserved**); dicatat di `NOTATION.md` §"ATURAN PENOMORAN".
+- [x] **A11** — §5.4 peta digambar ulang (lihat E14).
+- [x] **A12** — inden kotak `[SISTEM] 10` disamakan (9 spasi).
+- [x] **A13** — entri glossary **"BR-CON vs CON (istilah penamaan)"** ditambahkan (total istilah 30 → 31).
+- [x] **B1** — `business-rules.md` ditulis: **40 aturan** (VAL 11 · CALC 4 · AUTH 8 · WF 9 · CON 5 · RET 3), 34 Confirmed / 6 Pending, tiap aturan punya Rule/When/Then/Else/Examples/Related, **divalidasi otomatis identik dengan §6**.
+- [x] **B2** — `00-Global/PROCESS-FLOW-MASTER.md` ditulis: index PF-001…PF-007 + relationship map + aturan pemakaian.
+- [x] **E14 · Keputusan user (Mermaid)** — atas permintaan user, **§5.3 (DFD) & §5.4 (peta)** digambar dengan **Mermaid** + **deskripsi diagram** di atasnya; **semua diagram lain tetap ASCII**. Pengecualian dicatat di `NOTATION.md`, header `DESAIN-PROGRAM.md`, dan `README.md`. Konsekuensi: checklist "Nol Mermaid" (D) kini berlaku **di luar §5.3–§5.4**.
+- [x] **Sinkron** — referensi "belum dibuat" di §5.2/§6/Appendix A, `README.md`, `REQUIREMENTS-MATRIX.md` (coverage BR, gaps, daftar menyusul) diperbarui; Change Log `DESAIN-PROGRAM.md` v0.3.
 
 ## Urutan pengerjaan yang disarankan
 
-1. **A1, A2** — 2 baris, dampak besar (indeks & coverage salah).
-2. **A3–A7** — satu sesi: gambar ulang DFD §5.3 sekali jadi (pakai generator), lengkapi tabel M1–M17.
-3. **A8–A10** — keputusan kecil (handoff, kode `R-`, ERD).
-4. **A11–A13** — kosmetik.
-5. **B1** — `business-rules.md` (butuh fokus penuh, jangan di sela).
-6. **C1–C6** — dikumpulkan, dikirim ke user/stakeholder sekali jalan.
+1. ~~**A1, A2**~~ selesai · 2. ~~**A3–A7**~~ selesai · 3. ~~**A8–A10**~~ selesai ·
+4. ~~**A11–A13**~~ selesai · 5. ~~**B1**~~ selesai · 6. ~~**B2**~~ selesai.
+7. **B3** — BAB 1–2 mengikuti `00-Global/HANDOFF-BAB-1-2.md` (sesi terpisah).
+8. **C1–C6** — dikumpulkan, dikirim ke user/stakeholder sekali jalan.
